@@ -1,12 +1,16 @@
 """FastAPI application entry point with in-memory note storage."""
 
 import datetime
+import time
 from typing import Dict, List
 
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import Response
 
-from schemas import Note, NoteCreate
+from schemas import Note, NoteCreate, VersionResponse
+
+APP_VERSION: str = "1.0.0"
+START_TIME: float = time.time()
 
 # Initialize FastAPI app
 app = FastAPI()
@@ -121,3 +125,17 @@ def delete_note(id: int) -> Response:
 
     del notes[id]
     return Response(status_code=204)
+
+
+@app.get("/version")
+def get_version() -> VersionResponse:
+    """
+    Return application version and process uptime.
+
+    No authentication. No input. Reads APP_VERSION (module constant)
+    and computes uptime as int(time.time() - START_TIME).
+    """
+    return VersionResponse(
+        version=APP_VERSION,
+        uptime=int(time.time() - START_TIME),
+    )

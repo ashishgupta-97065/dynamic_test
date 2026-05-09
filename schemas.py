@@ -15,3 +15,9 @@ class Note(BaseModel):
     title: str
     content: str
     created_at: str
+
+
+class VersionResponse(BaseModel):
+    """Response model for GET /version."""
+    version: str
+    uptime: int
