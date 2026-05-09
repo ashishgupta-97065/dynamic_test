@@ -7,7 +7,7 @@ from typing import Dict, List
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import Response
 
-from schemas import Note, NoteCreate, VersionResponse
+from schemas import Note, NoteCreate, PingResponse, VersionResponse
 
 APP_VERSION: str = "1.0.0"
 START_TIME: float = time.time()
@@ -125,6 +125,18 @@ def delete_note(id: int) -> Response:
 
     del notes[id]
     return Response(status_code=204)
+
+
+@app.get("/ping", response_model=PingResponse)
+def ping(msg: str | None = None) -> PingResponse:
+    """
+    Return a pong response, optionally echoing back the caller-supplied msg.
+
+    No auth required. No side effects.
+    """
+    if msg is None:
+        return PingResponse(message="pong")
+    return PingResponse(message=f"pong: {msg}")
 
 
 @app.get("/version")

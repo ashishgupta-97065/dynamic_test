@@ -21,3 +21,8 @@ class VersionResponse(BaseModel):
     """Response model for GET /version."""
     version: str
     uptime: int
+
+
+class PingResponse(BaseModel):
+    """Response model for GET /ping."""
+    message: str
